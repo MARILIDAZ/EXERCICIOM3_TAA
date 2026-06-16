@@ -628,6 +628,34 @@
       margin-top: 10px;
     }
 
+    .submission-guide {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff9ec;
+      padding: 12px;
+    }
+
+    .submission-guide h3 {
+      margin: 0 0 8px;
+      color: var(--navy);
+    }
+
+    .submission-guide ol {
+      margin: 0 0 10px 20px;
+      padding: 0;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    .submission-guide img {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: block;
+      background: white;
+    }
+
     .nav {
       display: flex;
       justify-content: space-between;
@@ -902,11 +930,21 @@
             <div class="metric"><span>Estado SCORM</span><strong id="scormState">Em curso</strong></div>
           </div>
           <h3>Relatório para consulta do formador</h3>
-          <p>Guarde o relatório e submeta-o no Moodle como evidência da realização da atividade.</p>
+          <p>Guarde ou copie o relatório e submeta-o no Moodle como evidência da realização da atividade.</p>
           <pre class="report-box" id="reportBox">O relatório será gerado no final.</pre>
           <div class="report-actions">
-            <button class="btn secondary" type="button" id="downloadWord">Guardar relatório</button>
+            <button class="btn secondary" type="button" id="saveReport">Guardar/copiar relatório</button>
             <button class="btn primary" type="button" id="submitMoodle">Submeter</button>
+          </div>
+          <div class="submission-guide">
+            <h3>Como submeter no Moodle</h3>
+            <ol>
+              <li>Clique em <strong>Guardar/copiar relatório</strong>.</li>
+              <li>Clique em <strong>Submeter</strong> para abrir o Moodle.</li>
+              <li>No Moodle, clique em <strong>Iniciar a resposta</strong>.</li>
+              <li>Cole o conteúdo do relatório no campo de resposta e finalize a submissão.</li>
+            </ol>
+            <img src="moodle-iniciar-resposta.png" alt="Exemplo do local no Moodle onde o formando deve iniciar a resposta e colar o relatório.">
           </div>
           <h3>Mensagens-chave</h3>
           <div class="key-messages">
@@ -1015,7 +1053,7 @@
       finished: false
     };
 
-    const moodleSubmissionUrl = 'https://moodle.indicemaximo.pt/mod/assign/view.php?id=28210';
+    const moodleSubmissionUrl = 'https://moodle.indicemaximo.pt/mod/quiz/view.php?id=28211';
 
     const screens = [...document.querySelectorAll('.screen')];
 
@@ -1380,6 +1418,19 @@
       URL.revokeObjectURL(url);
     }
 
+    async function saveReportForSubmission() {
+      const report = buildReport();
+      let copied = false;
+      try {
+        await navigator.clipboard.writeText(report);
+        copied = true;
+      } catch (e) {}
+      downloadWordReport();
+      alert(copied
+        ? 'Relatório copiado e descarregado. No Moodle, clique em "Iniciar a resposta" e cole o conteúdo.'
+        : 'Relatório descarregado. Se não tiver ficado copiado automaticamente, abra o ficheiro Word, copie o conteúdo e cole no Moodle.');
+    }
+
     function submitToMoodle() {
       if (!moodleSubmissionUrl) {
         alert('O link de submissão no Moodle ainda não está configurado. Depois de guardar o relatório, use o local de submissão indicado pelo formador.');
@@ -1413,7 +1464,7 @@
     document.querySelectorAll('[data-prev]').forEach(button => button.addEventListener('click', () => showScreen(state.screen - 1)));
     document.getElementById('submitReflection').addEventListener('click', submitReflection);
     document.getElementById('finishBtn').addEventListener('click', finishActivity);
-    document.getElementById('downloadWord').addEventListener('click', downloadWordReport);
+    document.getElementById('saveReport').addEventListener('click', saveReportForSubmission);
     document.getElementById('submitMoodle').addEventListener('click', submitToMoodle);
 
     window.addEventListener('beforeunload', () => {
