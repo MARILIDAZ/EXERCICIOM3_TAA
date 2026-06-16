@@ -447,6 +447,53 @@
       color: white;
     }
 
+    .visual-highlight {
+      position: absolute;
+      z-index: 2;
+      border: 3px solid rgba(214, 155, 39, .95);
+      background: rgba(214, 155, 39, .2);
+      box-shadow: 0 0 0 999px rgba(8, 24, 38, .04);
+      pointer-events: none;
+    }
+
+    .visual-highlight.power {
+      right: 1.5%;
+      top: 2.5%;
+      width: 30%;
+      height: 19%;
+      transform: rotate(-7deg);
+      border-radius: 50%;
+    }
+
+    .visual-highlight.access {
+      left: 13%;
+      top: 16%;
+      width: 45%;
+      height: 42%;
+      transform: rotate(8deg);
+      border-radius: 45% 55% 48% 52%;
+      border-color: rgba(32, 116, 93, .95);
+      background: rgba(32, 116, 93, .2);
+    }
+
+    .visual-highlight.weather {
+      left: 16%;
+      top: 2%;
+      width: 44%;
+      height: 15%;
+      transform: rotate(2deg);
+      border-radius: 50% 42% 46% 54%;
+    }
+
+    .visual-highlight.boundary {
+      left: 33%;
+      bottom: 10%;
+      width: 40%;
+      height: 24%;
+      transform: rotate(-8deg);
+      border-radius: 45%;
+    }
+
     .question-text {
       color: var(--ink);
       font-size: 1.05rem;
@@ -713,7 +760,8 @@
         </div>
         <aside class="question-visual" aria-label="Imagem contextual da linha elétrica próxima da intervenção">
           <img src="cenario-industrial-altura.jpg" alt="Cena industrial com linha elétrica aérea próxima da zona de trabalho em altura.">
-          <div class="visual-marker" style="left:65%; top:18%;">1</div>
+          <div class="visual-highlight power"></div>
+          <div class="visual-marker" style="left:86%; top:9%;">1</div>
           <div class="visual-caption">Observe a relação entre a zona de intervenção e a linha elétrica aérea. Analise que medida deve ser tomada antes da autorização.</div>
         </aside>
       </div>
@@ -733,7 +781,8 @@
         </div>
         <aside class="question-visual" aria-label="Imagem contextual da plataforma elevatória">
           <img src="cenario-industrial-altura.jpg" alt="Cena industrial com plataforma elevatória disponível junto à fachada.">
-          <div class="visual-marker" style="left:61%; top:60%;">1</div>
+          <div class="visual-highlight access"></div>
+          <div class="visual-marker" style="left:48%; top:24%;">1</div>
           <div class="visual-caption">Observe os meios de acesso disponíveis e as condições do local. Selecione a opção tecnicamente mais adequada para a intervenção.</div>
         </aside>
       </div>
@@ -753,7 +802,8 @@
         </div>
         <aside class="question-visual" aria-label="Imagem contextual das condições meteorológicas">
           <img src="cenario-industrial-altura.jpg" alt="Cena industrial com indicação meteorológica e trabalho em altura planeado.">
-          <div class="visual-marker" style="left:86%; top:25%;">1</div>
+          <div class="visual-highlight weather"></div>
+          <div class="visual-marker" style="left:52%; top:7%;">1</div>
           <div class="visual-caption">Observe a indicação meteorológica e considere o impacto de uma alteração das condições no planeamento dos trabalhos.</div>
         </aside>
       </div>
@@ -778,9 +828,10 @@
         </div>
         <aside class="question-visual" aria-label="Imagem contextual da checklist de autorização">
           <img src="cenario-industrial-altura.jpg" alt="Cena industrial para verificação de condições antes da autorização dos trabalhos.">
-          <div class="visual-marker" style="left:47%; top:78%;">1</div>
-          <div class="visual-marker" style="left:65%; top:18%;">2</div>
-          <div class="visual-marker" style="left:61%; top:60%;">3</div>
+          <div class="visual-highlight boundary"></div>
+          <div class="visual-marker" style="left:56%; top:74%;">1</div>
+          <div class="visual-marker" style="left:86%; top:9%;">2</div>
+          <div class="visual-marker" style="left:48%; top:24%;">3</div>
           <div class="visual-caption">Use a imagem para apoiar a verificação das condições do local. Classifique cada item da checklist de acordo com a informação disponível.</div>
         </aside>
       </div>
@@ -800,7 +851,8 @@
         </div>
         <aside class="question-visual" aria-label="Imagem contextual da autorização final dos trabalhos">
           <img src="cenario-industrial-altura.jpg" alt="Cena industrial analisada para decisão final de autorização dos trabalhos.">
-          <div class="visual-marker" style="left:47%; top:78%;">1</div>
+          <div class="visual-highlight boundary"></div>
+          <div class="visual-marker" style="left:56%; top:74%;">1</div>
           <div class="visual-caption">Observe o conjunto da situação analisada e tome a decisão final com base na checklist preenchida.</div>
         </aside>
       </div>
@@ -825,8 +877,10 @@
         </div>
         <aside class="question-visual" aria-label="Imagem contextual para reflexão final">
           <img src="cenario-industrial-altura.jpg" alt="Cena industrial para apoiar a reflexão sobre verificações essenciais.">
-          <div class="visual-marker" style="left:65%; top:18%;">1</div>
-          <div class="visual-marker" style="left:47%; top:78%;">?</div>
+          <div class="visual-highlight power"></div>
+          <div class="visual-highlight boundary"></div>
+          <div class="visual-marker" style="left:86%; top:9%;">1</div>
+          <div class="visual-marker" style="left:56%; top:74%;">?</div>
           <div class="visual-caption">Use a imagem como referência: risco elétrico, cobertura, meteorologia, meio de acesso, circulação, delimitação da área e comunicação à equipa.</div>
         </aside>
       </div>
@@ -848,13 +902,11 @@
             <div class="metric"><span>Estado SCORM</span><strong id="scormState">Em curso</strong></div>
           </div>
           <h3>Relatório para consulta do formador</h3>
-          <p>Se a atividade estiver em iframe no Rise, a resposta aberta pode não ser recolhida automaticamente pelo Rise. O formando pode copiar ou transferir este relatório e submetê-lo no local indicado pelo formador.</p>
+          <p>Guarde o relatório e submeta-o no Moodle como evidência da realização da atividade.</p>
           <pre class="report-box" id="reportBox">O relatório será gerado no final.</pre>
           <div class="report-actions">
-            <button class="btn secondary" type="button" id="copyReport">Copiar relatório</button>
-            <button class="btn secondary" type="button" id="downloadReport">Transferir relatório .txt</button>
-            <button class="btn secondary" type="button" id="downloadWord">Transferir relatório Word</button>
-            <button class="btn secondary" type="button" id="printReport">Guardar PDF / Imprimir</button>
+            <button class="btn secondary" type="button" id="downloadWord">Guardar relatório</button>
+            <button class="btn primary" type="button" id="submitMoodle">Submeter</button>
           </div>
           <h3>Mensagens-chave</h3>
           <div class="key-messages">
@@ -870,8 +922,10 @@
         </div>
         <aside class="question-visual" aria-label="Imagem de síntese da situação de trabalho">
           <img src="cenario-industrial-altura.jpg" alt="Cena industrial usada na atividade, sintetizando os principais riscos verificados.">
-          <div class="visual-marker" style="left:65%; top:18%;">1</div>
-          <div class="visual-marker" style="left:61%; top:60%;">2</div>
+          <div class="visual-highlight power"></div>
+          <div class="visual-highlight access"></div>
+          <div class="visual-marker" style="left:86%; top:9%;">1</div>
+          <div class="visual-marker" style="left:48%; top:24%;">2</div>
           <div class="visual-caption">Síntese visual: a decisão de autorizar depende da conjugação de riscos elétricos, trabalho em altura, acesso, meteorologia, circulação e delimitação da zona.</div>
         </aside>
       </div>
@@ -960,6 +1014,8 @@
       reflectionPoints: 0,
       finished: false
     };
+
+    const moodleSubmissionUrl = 'https://moodle.indicemaximo.pt/mod/assign/view.php?id=28210';
 
     const screens = [...document.querySelectorAll('.screen')];
 
@@ -1324,6 +1380,14 @@
       URL.revokeObjectURL(url);
     }
 
+    function submitToMoodle() {
+      if (!moodleSubmissionUrl) {
+        alert('O link de submissão no Moodle ainda não está configurado. Depois de guardar o relatório, use o local de submissão indicado pelo formador.');
+        return;
+      }
+      window.open(moodleSubmissionUrl, '_blank', 'noopener,noreferrer');
+    }
+
     function escapeHtml(text) {
       return String(text)
         .replaceAll('&', '&amp;')
@@ -1349,10 +1413,8 @@
     document.querySelectorAll('[data-prev]').forEach(button => button.addEventListener('click', () => showScreen(state.screen - 1)));
     document.getElementById('submitReflection').addEventListener('click', submitReflection);
     document.getElementById('finishBtn').addEventListener('click', finishActivity);
-    document.getElementById('copyReport').addEventListener('click', copyReport);
-    document.getElementById('downloadReport').addEventListener('click', downloadReport);
     document.getElementById('downloadWord').addEventListener('click', downloadWordReport);
-    document.getElementById('printReport').addEventListener('click', printReport);
+    document.getElementById('submitMoodle').addEventListener('click', submitToMoodle);
 
     window.addEventListener('beforeunload', () => {
       if (scorm.initialized) scorm.finish();
