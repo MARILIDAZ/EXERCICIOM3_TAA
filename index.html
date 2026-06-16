@@ -310,20 +310,28 @@
       margin-top: 12px;
     }
 
+    .fallback-title {
+      margin: 14px 0 6px;
+      color: var(--navy);
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
     .hotspot-item {
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: white;
-      padding: 9px 10px;
-      color: var(--muted);
+      background: #ffffff;
+      padding: 12px 12px;
+      color: var(--ink);
       display: grid;
-      grid-template-columns: 24px 1fr;
-      gap: 8px;
+      grid-template-columns: 30px 1fr;
+      gap: 10px;
       align-items: start;
       line-height: 1.32;
       width: 100%;
       text-align: left;
       font: inherit;
+      font-weight: 750;
     }
 
     button.hotspot-item {
@@ -340,12 +348,13 @@
     .hotspot-item b {
       display: grid;
       place-items: center;
-      width: 24px;
-      height: 24px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      background: #e6edf1;
+      background: var(--alert);
       color: var(--navy);
-      font-size: .82rem;
+      font-size: .9rem;
+      font-weight: 950;
     }
 
     .hotspot-item.done {
@@ -679,11 +688,12 @@
         </div>
         <aside class="panel">
           <h2>Inspeção inicial do local</h2>
-          <p>Observe a imagem e identifique todos os elementos que devem ser avaliados antes do início dos trabalhos.</p>
+          <p>Observe a imagem e selecione, na lista abaixo, todos os elementos que devem ser avaliados antes do início dos trabalhos.</p>
+          <div class="fallback-title">Pontos de inspeção a selecionar</div>
           <div class="hotspot-list" id="hotspotList"></div>
           <div class="feedback" aria-live="polite">
             <strong id="hotspotFeedbackTitle">A aguardar identificação.</strong>
-            <span id="hotspotFeedbackText">A atividade só permite avançar após todos os pontos críticos serem identificados.</span>
+            <span id="hotspotFeedbackText">Clique nos pontos de inspeção da lista. A atividade só permite avançar após todos serem identificados.</span>
           </div>
         </aside>
       </div>
