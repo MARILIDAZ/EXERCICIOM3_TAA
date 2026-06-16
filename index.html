@@ -853,6 +853,8 @@
           <div class="report-actions">
             <button class="btn secondary" type="button" id="copyReport">Copiar relatório</button>
             <button class="btn secondary" type="button" id="downloadReport">Transferir relatório .txt</button>
+            <button class="btn secondary" type="button" id="downloadWord">Transferir relatório Word</button>
+            <button class="btn secondary" type="button" id="printReport">Guardar PDF / Imprimir</button>
           </div>
           <h3>Mensagens-chave</h3>
           <div class="key-messages">
@@ -964,11 +966,17 @@
     function findScormApi(win) {
       let current = win;
       for (let i = 0; i < 8 && current; i++) {
-        if (current.API) return current.API;
-        if (current.parent === current) break;
-        current = current.parent;
+        try {
+          if (current.API) return current.API;
+          if (current.parent === current) break;
+          current = current.parent;
+        } catch (e) {
+          break;
+        }
       }
-      if (win.opener) return findScormApi(win.opener);
+      try {
+        if (win.opener) return findScormApi(win.opener);
+      } catch (e) {}
       return null;
     }
 
@@ -1302,12 +1310,49 @@
       URL.revokeObjectURL(url);
     }
 
+    function downloadWordReport() {
+      const report = buildReport();
+      const html = '<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><title>Relatório da atividade</title><style>body{font-family:Arial,sans-serif;color:#17222b;line-height:1.45}h1{font-size:20pt;color:#17324a}pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:11pt}</style></head><body><h1>Relatório da atividade</h1><pre>' + escapeHtml(report) + '</pre></body></html>';
+      const blob = new Blob(['\ufeff', html], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'relatorio-autorizacao-trabalhos-altura.doc';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function printReport() {
+      const report = buildReport();
+      const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=900,height=700');
+      if (!printWindow) {
+        alert('O navegador bloqueou a janela de impressão. Use "Copiar relatório" ou "Transferir relatório .txt" como alternativa.');
+        return;
+      }
+      printWindow.document.open();
+      printWindow.document.write('<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><title>Relatório da atividade</title><style>body{font-family:Arial,sans-serif;color:#17222b;margin:28px;line-height:1.45}h1{font-size:22px;margin:0 0 8px;color:#17324a}pre{white-space:pre-wrap;border:1px solid #d5dde3;padding:14px;border-radius:8px;background:#f8fafb}button{margin-bottom:18px;padding:10px 14px;border:0;border-radius:6px;background:#17324a;color:white;font-weight:700}@media print{button{display:none}body{margin:18mm}}</style></head><body><button onclick="window.print()">Guardar como PDF / Imprimir</button><h1>Relatório da atividade</h1><pre>' + escapeHtml(report) + '</pre><script>setTimeout(function(){window.print()},300)<\\/script></body></html>');
+      printWindow.document.close();
+    }
+
     document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => showScreen(state.screen + 1)));
     document.querySelectorAll('[data-prev]').forEach(button => button.addEventListener('click', () => showScreen(state.screen - 1)));
     document.getElementById('submitReflection').addEventListener('click', submitReflection);
     document.getElementById('finishBtn').addEventListener('click', finishActivity);
     document.getElementById('copyReport').addEventListener('click', copyReport);
     document.getElementById('downloadReport').addEventListener('click', downloadReport);
+    document.getElementById('downloadWord').addEventListener('click', downloadWordReport);
+    document.getElementById('printReport').addEventListener('click', printReport);
 
     window.addEventListener('beforeunload', () => {
       if (scorm.initialized) scorm.finish();
