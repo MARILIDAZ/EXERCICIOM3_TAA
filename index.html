@@ -934,7 +934,7 @@
           <pre class="report-box" id="reportBox">O relatório será gerado no final.</pre>
           <div class="report-actions">
             <button class="btn secondary" type="button" id="saveReport">Guardar/copiar relatório</button>
-            <button class="btn primary" type="button" id="submitMoodle">Submeter</button>
+            <a class="btn primary" id="submitMoodle" href="#" target="_blank" rel="noopener noreferrer">Submeter</a>
           </div>
           <div class="submission-guide">
             <h3>Como submeter no Moodle</h3>
@@ -944,6 +944,7 @@
               <li>No Moodle, clique em <strong>Iniciar a resposta</strong>.</li>
               <li>Cole o conteúdo do relatório no campo de resposta e finalize a submissão.</li>
             </ol>
+            <p class="small-note">Se o botão não abrir, copie este endereço: <br><strong id="moodleLinkText">Link de submissão no Moodle</strong></p>
             <img src="moodle-iniciar-resposta.png" alt="Exemplo do local no Moodle onde o formando deve iniciar a resposta e colar o relatório.">
           </div>
           <h3>Mensagens-chave</h3>
@@ -1053,7 +1054,9 @@
       finished: false
     };
 
-    const moodleSubmissionUrl = 'https://moodle.indicemaximo.pt/mod/quiz/view.php?id=28211';
+    const defaultMoodleSubmissionUrl = 'https://moodle.indicemaximo.pt/mod/quiz/view.php?id=28229';
+    const urlParams = new URLSearchParams(window.location.search);
+    const moodleSubmissionUrl = urlParams.get('submit') || defaultMoodleSubmissionUrl;
 
     const screens = [...document.querySelectorAll('.screen')];
 
@@ -1361,6 +1364,13 @@
       document.getElementById('reportBox').textContent = buildReport();
     }
 
+    function configureSubmissionLink() {
+      const submitLink = document.getElementById('submitMoodle');
+      const linkText = document.getElementById('moodleLinkText');
+      if (submitLink) submitLink.href = moodleSubmissionUrl;
+      if (linkText) linkText.textContent = moodleSubmissionUrl;
+    }
+
     function finishActivity() {
       state.finished = true;
       const score = calculateScore();
@@ -1431,14 +1441,6 @@
         : 'Relatório descarregado. Se não tiver ficado copiado automaticamente, abra o ficheiro Word, copie o conteúdo e cole no Moodle.');
     }
 
-    function submitToMoodle() {
-      if (!moodleSubmissionUrl) {
-        alert('O link de submissão no Moodle ainda não está configurado. Depois de guardar o relatório, use o local de submissão indicado pelo formador.');
-        return;
-      }
-      window.open(moodleSubmissionUrl, '_blank', 'noopener,noreferrer');
-    }
-
     function escapeHtml(text) {
       return String(text)
         .replaceAll('&', '&amp;')
@@ -1465,7 +1467,6 @@
     document.getElementById('submitReflection').addEventListener('click', submitReflection);
     document.getElementById('finishBtn').addEventListener('click', finishActivity);
     document.getElementById('saveReport').addEventListener('click', saveReportForSubmission);
-    document.getElementById('submitMoodle').addEventListener('click', submitToMoodle);
 
     window.addEventListener('beforeunload', () => {
       if (scorm.initialized) scorm.finish();
@@ -1477,6 +1478,7 @@
     renderChecklist();
     updateHotspotList();
     updateScore();
+    configureSubmissionLink();
     showScreen(0);
   </script>
 </body>
